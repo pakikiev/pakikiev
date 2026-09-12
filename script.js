@@ -130,7 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutClose = document.getElementById('checkout-close');
   const checkoutForm = document.getElementById('checkout-form');
   const checkoutStatus = document.getElementById('checkout-status');
+  const checkoutPhone = document.getElementById('checkout-phone');
   const orderApiUrl = window.ORDER_API_URL || '/api/order';
+
+  checkoutPhone?.addEventListener('input', () => {
+    checkoutPhone.value = checkoutPhone.value.replace(/\D/g, '').slice(0, 10);
+  });
 
   checkoutToggle?.addEventListener('click', () => {
     if (cart.length === 0) {
@@ -165,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(checkoutForm);
     const order = {
       customer: {
-        phone: formData.get('phone'),
+        phone: `+38${formData.get('phone')}`,
       },
       items: cart,
     };

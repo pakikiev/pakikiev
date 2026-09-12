@@ -38,7 +38,10 @@
         <p>Ми зв’яжемося з вами найближчим часом для уточнення інформації.</p>
         <form class="checkout-form" id="checkout-form">
           <label for="checkout-phone">Номер телефону</label>
-          <input id="checkout-phone" name="phone" type="tel" required autocomplete="tel" placeholder="+380 00 000 00 00" />
+          <div class="phone-input">
+            <span aria-hidden="true">+38</span>
+            <input id="checkout-phone" name="phone" type="tel" required inputmode="numeric" autocomplete="tel-national" maxlength="10" pattern="0[0-9]{9}" placeholder="0 00 000 00 00" />
+          </div>
           <button class="checkout-submit" type="submit">Надіслати замовлення</button>
           <p class="checkout-status" id="checkout-status" role="status"></p>
         </form>

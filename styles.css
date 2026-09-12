@@ -200,6 +200,29 @@ img {
   resize: vertical;
 }
 
+.phone-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.phone-input span {
+  padding-left: 0.65rem;
+  color: #555555;
+}
+
+.phone-input input {
+  border: 0;
+  border-radius: 0;
+  padding-left: 0.25rem;
+}
+
+.phone-input input:focus {
+  outline: none;
+}
+
 .checkout-status {
   margin: 0;
   color: #1f7a4d;
