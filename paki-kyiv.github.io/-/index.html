@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Раки на замовлення</title>
+  <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Firebase SDK (compat версия для глобального api firebase.database()) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Раки на замовлення</h1>
+      <p>Живі, варені та доповнення до раків — оберіть потрібний розділ нижче. Доставка тільки по Києву.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="home">
+      <img class="hero-image" src="ава/ава/photo_5474613526396605946_y.jpg" alt="Раки" />
+      <div class="hero-content">
+        <p>Натисніть на потрібний розділ, щоб ознайомитися з цінами та пропозиціями.</p>
+        <div class="section-buttons">
+          <a href="index.html#live">Живі раки</a>
+          <a href="index.html#cooked">Варені раки</a>
+          <a href="index.html#extras">Доповнення</a>
+          <a href="index.html#delivery">Правила доставки</a>
+          <a href="index.html#contact">Номер телефону</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card" id="live">
+      <h2>Ціна на живі раки</h2>
+      <div class="gallery">
+        <img src="raki-zhivye/live.jpg" alt="Живі раки 1" />
+        <img src="raki-zhivye/images-1.jpg" alt="Живі раки 2" />
+        <img src="raki-zhivye/download.jpg" alt="Живі раки 3" />
+      </div>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Вага</th>
+            <th>Ціна</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>500 г</td>
+            <td>450 грн</td>
+          </tr>
+          <tr>
+            <td>1 кг</td>
+            <td>850 грн</td>
+          </tr>
+          <tr>
+            <td>2 кг</td>
+            <td>1600 грн</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section-card" id="cooked">
+      <h2>Ціни на варені раки</h2>
+      <div class="gallery">
+        <img src="raki-varyonye/cooked.jpg" alt="Варені раки 1" />
+        <img src="raki-varyonye/3вар.jpg" alt="Варені раки 2" />
+        <img src="raki-varyonye/2вар.jpg" alt="Варені раки 3" />
+      </div>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Порція</th>
+            <th>Ціна</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 кг</td>
+            <td>1500 грн</td>
+          </tr>
+          <tr>
+            <td>3 кг</td>
+            <td>4000 грн</td>
+          </tr>
+          <tr>
+            <td>5 кг</td>
+            <td>6000 грн</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section-card" id="extras">
+      <h2>Доповнення до раків</h2>
+      <div class="info-grid">
+        <article>
+          <h3>Пиво</h3>
+          <p>Холодне пиво до раків. Відмінний варіант для компанії.</p>
+          <p class="price">від 60 грн за пляшку</p>
+        </article>
+        <article>
+          <h3>Закуски</h3>
+          <p>До пива та раків: солоні крекери, горішки, лимон.</p>
+          <p class="price">від 40 грн</p>
+        </article>
+        <article>
+          <h3>Риба</h3>
+          <p>Рибні страви та свіжа охолоджена риба на додаток до раків.</p>
+          <p class="price">від 120 грн</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card" id="delivery">
+      <h2>Правила доставки</h2>
+      <p>Доставка по Києву 250 грн при замовленні від 3 кг варених або 5 живих — доставка безкоштовно.</p>
+    </section>
+
+    <section class="section-card" id="contact">
+      <h2>Зв'язок</h2>
+      <p>Зв'яжіться з нами для замовлення та уточнення наявності:</p>
+      
+      <div class="contact-methods">
+        <a href="tel:+380991234567" class="contact-btn phone-btn">
+          <span class="contact-icon">📞</span>
+          <div class="contact-info">
+            <span class="contact-label">Телефон</span>
+            <span class="contact-value">+380 99 123 45 67</span>
+          </div>
+        </a>
+        
+        <a href="https://t.me/raki_kyiv" class="contact-btn telegram-btn">
+          <span class="contact-icon">📱</span>
+          <div class="contact-info">
+            <span class="contact-label">Telegram</span>
+            <span class="contact-value">@raki_kyiv</span>
+          </div>
+        </a>
+      </div>
+      
+      <p class="working-hours">Працюємо щодня з 10:00 до 20:00</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Сайт створений за допомогою GitHub Copilot.</p>
+    </div>
+  </footer>
+
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

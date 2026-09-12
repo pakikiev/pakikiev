@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>StartUpRak — раки на замовлення</title>
+    <link rel="icon" type="image/jpeg" href="ава/ава/5271675209264080906.jpg" />
+    <link rel="stylesheet" href="styles.css?v=20260912-new" />
+  </head>
+  <body>
+    <div class="cart-widget" aria-live="polite">
+      <button class="cart-toggle" id="cart-toggle" type="button" aria-expanded="false" aria-controls="cart-panel">
+        <span class="cart-icon">🛒</span>
+        <span>Кошик</span>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+      <div class="cart-panel" id="cart-panel" hidden>
+        <div class="cart-header">
+          <span>Ваше замовлення</span>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+          <span>Разом:</span>
+          <strong id="cart-total">0 грн</strong>
+        </div>
+        <button class="clear-cart" id="clear-cart" type="button">Очистити</button>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container">
+        <h1>StartUpRak</h1>
+        <p>Преміальні живі та варені раки з доставкою по Києву.</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" id="home">
+        <img class="hero-image" src="ава/ава/5271675209264080906.jpg" alt="Логотип StartUpRak" />
+        <div class="hero-content">
+          <p>Оберіть потрібний розділ і дізнайтеся актуальні ціни.</p>
+          <div class="section-buttons">
+            <a href="#live">Живі раки</a>
+            <a href="#cooked">Варені раки</a>
+            <a href="#delivery">Доставка</a>
+            <a href="#contact">Контакти</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card" id="live">
+        <h2>Ціни на живі раки</h2>
+        <div class="gallery">
+          <img src="raki-zhivye/live.jpg" alt="Живі раки" />
+          <img src="raki-zhivye/images-1.jpg" alt="Живі раки" />
+          <img src="raki-zhivye/download.jpg" alt="Живі раки" />
+        </div>
+
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Розмір</th>
+              <th>Ціна</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>40 грам</td>
+              <td>1500 грн</td>
+            </tr>
+            <tr>
+              <td>70 грам</td>
+              <td>2400 грн</td>
+            </tr>
+            <tr>
+              <td>70+ грам</td>
+              <td>3300 грн</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="crab-order">
+          <div class="selector-wrap">
+            <label for="live-size">Розмір</label>
+            <select id="live-size" class="size-select">
+              <option value="40">40 г</option>
+              <option value="70">70 г</option>
+              <option value="70+">70+ г</option>
+            </select>
+          </div>
+
+          <div class="selector-wrap">
+            <label for="live-weight">Кількість</label>
+            <select id="live-weight" class="weight-select">
+              <option value="1">1 кг</option>
+              <option value="1.5">1.5 кг</option>
+              <option value="2">2 кг</option>
+              <option value="2.5">2.5 кг</option>
+              <option value="3">3 кг</option>
+              <option value="3.5">3.5 кг</option>
+              <option value="4">4 кг</option>
+              <option value="4.5">4.5 кг</option>
+              <option value="5">5 кг</option>
+            </select>
+          </div>
+
+          <div class="total-box">
+            <span>Сума</span>
+            <strong class="order-total">0 грн</strong>
+          </div>
+
+          <button class="add-cart-btn" type="button" data-type="live" data-title="Живі раки">В корзину</button>
+        </div>
+      </section>
+
+      <section class="section-card" id="cooked">
+        <h2>Ціни на варені раки</h2>
+        <div class="gallery">
+          <img src="raki-varyonye/cooked.jpg" alt="Варені раки" />
+          <img src="raki-varyonye/3вар.jpg" alt="Варені раки" />
+          <img src="raki-varyonye/2вар.jpg" alt="Варені раки" />
+        </div>
+
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Розмір</th>
+              <th>Ціна</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>40 грам</td>
+              <td>1500 грн</td>
+            </tr>
+            <tr>
+              <td>70 грам</td>
+              <td>2400 грн</td>
+            </tr>
+            <tr>
+              <td>70+ грам</td>
+              <td>3300 грн</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="crab-order">
+          <div class="selector-wrap">
+            <label for="cooked-size">Розмір</label>
+            <select id="cooked-size" class="size-select">
+              <option value="40">40 г</option>
+              <option value="70">70 г</option>
+              <option value="70+">70+ г</option>
+            </select>
+          </div>
+
+          <div class="selector-wrap">
+            <label for="cooked-weight">Кількість</label>
+            <select id="cooked-weight" class="weight-select">
+              <option value="1">1 кг</option>
+              <option value="1.5">1.5 кг</option>
+              <option value="2">2 кг</option>
+              <option value="2.5">2.5 кг</option>
+              <option value="3">3 кг</option>
+              <option value="3.5">3.5 кг</option>
+              <option value="4">4 кг</option>
+              <option value="4.5">4.5 кг</option>
+              <option value="5">5 кг</option>
+            </select>
+          </div>
+
+          <div class="total-box">
+            <span>Сума</span>
+            <strong class="order-total">0 грн</strong>
+          </div>
+
+          <button class="add-cart-btn" type="button" data-type="cooked" data-title="Варені раки">В корзину</button>
+        </div>
+      </section>
+
+      <section class="section-card" id="extras">
+        <h2>Доповнення до раків</h2>
+
+        <div class="extras-block">
+          <div class="extra-group">
+            <h3>Пиво</h3>
+            <p>Холодне пиво до раків. Відмінний варіант для компанії.</p>
+            <div class="extra-items">
+              <div class="extra-item">
+                <span>Corona</span>
+                <strong>від 60 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Heineken</span>
+                <strong>від 65 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Obolon</span>
+                <strong>від 55 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Lvivs'ke</span>
+                <strong>від 58 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Stella Artois</span>
+                <strong>від 70 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Budweiser</span>
+                <strong>від 68 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Guinness</span>
+                <strong>від 75 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Peroni</span>
+                <strong>від 72 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Zatecky Gus</span>
+                <strong>від 66 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Desperados</span>
+                <strong>від 78 грн</strong>
+                <button class="cart-btn" type="button" data-unit="пляшка">В корзину</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="extra-group">
+            <h3>Закуски</h3>
+            <p>До пива та раків: солоні крекери, горішки, лимон.</p>
+            <div class="extra-items">
+              <div class="extra-item">
+                <span>Солоні крекери</span>
+                <strong>від 40 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Горішки</span>
+                <strong>від 45 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Лимон</span>
+                <strong>від 35 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Картопля фрі</span>
+                <strong>від 55 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Сирні палички</span>
+                <strong>від 50 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Оливки</span>
+                <strong>від 42 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+              <div class="extra-item">
+                <span>Мікс закусок</span>
+                <strong>від 60 грн</strong>
+                <button class="cart-btn" type="button">В корзину</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card" id="delivery">
+        <h2>Правила доставки</h2>
+        <p>Но доставка по тарифам таксі.</p>
+        <p>Безкоштовно від 3 кг.</p>
+        <p>Але це по Києву.</p>
+        <p>По області — по тарифам таксі.</p>
+      </section>
+
+      <section class="section-card" id="contact">
+        <h2>Контакти</h2>
+        <p>Зв'яжіться з нами для замовлення та уточнення наявності.</p>
+
+        <div class="contact-methods">
+          <a href="tel:+380991234567" class="contact-btn">
+            <span>📞</span>
+            <div>
+              <small>Телефон</small>
+              <strong>+380 99 123 45 67</strong>
+            </div>
+          </a>
+
+          <a href="https://t.me/raki_kyiv" class="contact-btn" target="_blank" rel="noreferrer">
+            <span>📱</span>
+            <div>
+              <small>Telegram</small>
+              <strong>@raki_kyiv</strong>
+            </div>
+          </a>
+        </div>
+
+        <p class="working-hours">Працюємо щодня з 10:00 до 20:00</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Сайт створений за допомогою GitHub Copilot.</p>
+      </div>
+    </footer>
+
+    <script src="script.js?v=20260912-cart"></script>
+  </body>
+</html>
