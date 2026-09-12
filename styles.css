@@ -206,21 +206,23 @@ img {
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 8px;
   overflow: hidden;
+  background: #ffffff;
 }
 
 .phone-input span {
   padding-left: 0.65rem;
-  color: #555555;
+  color: #444444;
+  font-weight: 700;
 }
 
 .phone-input input {
   border: 0;
   border-radius: 0;
-  padding-left: 0.25rem;
 }
 
 .phone-input input:focus {
-  outline: none;
+  outline: 2px solid #1f7a4d;
+  outline-offset: -2px;
 }
 
 .checkout-status {

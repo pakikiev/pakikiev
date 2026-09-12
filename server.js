@@ -108,7 +108,9 @@ async function handleOrder(request, response) {
     });
 
     if (!telegramResponse.ok) {
-      sendJson(response, 502, { error: 'Telegram не прийняв замовлення' });
+      const telegramError = await telegramResponse.json().catch(() => ({}));
+      console.error('Telegram API error:', telegramError);
+      sendJson(response, 502, { error: telegramError.description || 'Telegram не прийняв замовлення' });
       return;
     }
 

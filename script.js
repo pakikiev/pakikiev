@@ -132,9 +132,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutStatus = document.getElementById('checkout-status');
   const checkoutPhone = document.getElementById('checkout-phone');
   const orderApiUrl = window.ORDER_API_URL || '/api/order';
+  const savedPhone = localStorage.getItem('checkout-phone');
+
+  if (savedPhone && checkoutPhone) {
+    checkoutPhone.value = savedPhone.startsWith('+380') ? savedPhone : `+380${savedPhone.replace(/\D/g, '').slice(-9)}`;
+  }
 
   checkoutPhone?.addEventListener('input', () => {
-    checkoutPhone.value = checkoutPhone.value.replace(/\D/g, '').slice(0, 10);
+    const digits = checkoutPhone.value.replace(/\D/g, '').replace(/^380/, '').slice(0, 9);
+    checkoutPhone.value = `+380${digits}`;
+    localStorage.setItem('checkout-phone', checkoutPhone.value);
+  });
+
+  checkoutPhone?.addEventListener('keydown', (event) => {
+    if (checkoutPhone.selectionStart <= 4 && ['Backspace', 'Delete', 'ArrowLeft'].includes(event.key)) {
+      event.preventDefault();
+      checkoutPhone.setSelectionRange(4, 4);
+    }
   });
 
   checkoutToggle?.addEventListener('click', () => {
@@ -168,9 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitButton = checkoutForm.querySelector('.checkout-submit');
     const formData = new FormData(checkoutForm);
+    const phone = String(formData.get('phone') || '');
+
+    if (!/^\+380\d{9}$/.test(phone)) {
+      checkoutPhone?.focus();
+      checkoutStatus.textContent = 'Введіть 9 цифр після +380.';
+      return;
+    }
+
     const order = {
       customer: {
-        phone: `+38${formData.get('phone')}`,
+        phone,
       },
       items: cart,
     };
@@ -184,16 +206,20 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(order),
       });
-      const result = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const result = contentType.includes('application/json')
+        ? await response.json()
+        : { error: 'Сервіс замовлень недоступний на цьому сайті.' };
 
       if (!response.ok) throw new Error(result.error || 'Не вдалося надіслати замовлення');
 
       cart.length = 0;
-      checkoutForm.reset();
+      checkoutPhone.value = phone;
+      localStorage.setItem('checkout-phone', phone);
       checkoutStatus.textContent = 'Дякуємо! Ми скоро зателефонуємо вам.';
       renderCart();
     } catch (error) {
-      checkoutStatus.textContent = 'Не вдалося надіслати замовлення. Спробуйте ще раз.';
+      checkoutStatus.textContent = error.message || 'Не вдалося надіслати замовлення. Спробуйте ще раз.';
     } finally {
       submitButton.disabled = false;
     }
