@@ -125,5 +125,59 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
   });
 
+  const checkoutToggle = document.getElementById('checkout-toggle');
+  const checkoutForm = document.getElementById('checkout-form');
+  const checkoutStatus = document.getElementById('checkout-status');
+  const orderApiUrl = window.ORDER_API_URL || '/api/order';
+
+  checkoutToggle?.addEventListener('click', () => {
+    if (cart.length === 0) {
+      checkoutStatus.textContent = 'Спочатку додайте товари в кошик.';
+      return;
+    }
+
+    checkoutForm.hidden = !checkoutForm.hidden;
+    checkoutStatus.textContent = '';
+  });
+
+  checkoutForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const submitButton = checkoutForm.querySelector('.checkout-submit');
+    const formData = new FormData(checkoutForm);
+    const order = {
+      customer: {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
+      },
+      items: cart,
+    };
+
+    submitButton.disabled = true;
+    checkoutStatus.textContent = 'Надсилаємо замовлення...';
+
+    try {
+      const response = await fetch(orderApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order),
+      });
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.error || 'Не вдалося надіслати замовлення');
+
+      cart.length = 0;
+      checkoutForm.reset();
+      checkoutForm.hidden = true;
+      checkoutStatus.textContent = 'Замовлення прийнято. Ми зв’яжемося з вами.';
+      renderCart();
+    } catch (error) {
+      checkoutStatus.textContent = 'Не вдалося надіслати замовлення. Спробуйте ще раз.';
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
   renderCart();
 });

@@ -26,6 +26,23 @@
           <span>Разом:</span>
           <strong id="cart-total">0 грн</strong>
         </div>
+        <button class="checkout-btn" id="checkout-toggle" type="button">Оформити замовлення</button>
+        <form class="checkout-form" id="checkout-form" hidden>
+          <label>
+            Ім'я
+            <input name="name" type="text" required autocomplete="name" />
+          </label>
+          <label>
+            Телефон
+            <input name="phone" type="tel" required autocomplete="tel" />
+          </label>
+          <label>
+            Адреса доставки
+            <textarea name="address" rows="2" required autocomplete="street-address"></textarea>
+          </label>
+          <button class="checkout-submit" type="submit">Надіслати замовлення</button>
+          <p class="checkout-status" id="checkout-status" role="status"></p>
+        </form>
         <button class="clear-cart" id="clear-cart" type="button">Очистити</button>
       </div>
     </div>
