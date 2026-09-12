@@ -1,0 +1,10 @@
+{
+  "name": "pakikiev-web-service",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
