@@ -126,18 +126,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const checkoutToggle = document.getElementById('checkout-toggle');
+  const checkoutModal = document.getElementById('checkout-modal');
+  const checkoutClose = document.getElementById('checkout-close');
   const checkoutForm = document.getElementById('checkout-form');
   const checkoutStatus = document.getElementById('checkout-status');
   const orderApiUrl = window.ORDER_API_URL || '/api/order';
 
   checkoutToggle?.addEventListener('click', () => {
     if (cart.length === 0) {
-      checkoutStatus.textContent = 'Спочатку додайте товари в кошик.';
+      checkoutToggle.textContent = 'Додайте товар у кошик';
+      window.setTimeout(() => {
+        checkoutToggle.textContent = 'Оформити замовлення';
+      }, 1800);
       return;
     }
 
-    checkoutForm.hidden = !checkoutForm.hidden;
+    checkoutModal.hidden = false;
     checkoutStatus.textContent = '';
+    checkoutForm.querySelector('input')?.focus();
+  });
+
+  const closeCheckoutModal = () => {
+    checkoutModal.hidden = true;
+  };
+
+  checkoutClose?.addEventListener('click', closeCheckoutModal);
+  checkoutModal?.addEventListener('click', (event) => {
+    if (event.target === checkoutModal) closeCheckoutModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && checkoutModal && !checkoutModal.hidden) closeCheckoutModal();
   });
 
   checkoutForm?.addEventListener('submit', async (event) => {
@@ -147,9 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(checkoutForm);
     const order = {
       customer: {
-        name: formData.get('name'),
         phone: formData.get('phone'),
-        address: formData.get('address'),
       },
       items: cart,
     };
@@ -169,8 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       cart.length = 0;
       checkoutForm.reset();
-      checkoutForm.hidden = true;
-      checkoutStatus.textContent = 'Замовлення прийнято. Ми зв’яжемося з вами.';
+      checkoutStatus.textContent = 'Дякуємо! Ми скоро зателефонуємо вам.';
       renderCart();
     } catch (error) {
       checkoutStatus.textContent = 'Не вдалося надіслати замовлення. Спробуйте ще раз.';

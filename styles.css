@@ -206,6 +206,61 @@ img {
   font-size: 0.85rem;
 }
 
+.checkout-modal[hidden] {
+  display: none;
+}
+
+.checkout-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+}
+
+.checkout-dialog {
+  position: relative;
+  width: min(100%, 360px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+}
+
+.checkout-dialog h2 {
+  margin: 0 2rem 0.55rem 0;
+  font-size: 1.25rem;
+}
+
+.checkout-dialog > p {
+  margin: 0;
+  color: #444444;
+  line-height: 1.45;
+}
+
+.checkout-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  border: 0;
+  background: transparent;
+  color: #555555;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.checkout-form {
+  margin-top: 1rem;
+}
+
+.checkout-form label {
+  color: #111111;
+}
+
 .site-header {
   padding: 4rem 0 1rem;
   text-align: center;

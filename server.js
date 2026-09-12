@@ -67,9 +67,7 @@ function makeTelegramMessage(order) {
   return [
     '<b>Нове замовлення</b>',
     '',
-    `<b>Клієнт:</b> ${escapeTelegramText(order.customer.name)}`,
     `<b>Телефон:</b> ${escapeTelegramText(order.customer.phone)}`,
-    `<b>Адреса:</b> ${escapeTelegramText(order.customer.address)}`,
     '',
     '<b>Замовлення:</b>',
     items,
@@ -89,8 +87,8 @@ async function handleOrder(request, response) {
     const customer = order.customer || {};
     const items = Array.isArray(order.items) ? order.items : [];
 
-    if (!customer.name || !customer.phone || !customer.address || items.length === 0) {
-      sendJson(response, 400, { error: 'Заповніть усі поля та додайте товари' });
+    if (!customer.phone || items.length === 0) {
+      sendJson(response, 400, { error: 'Вкажіть номер телефону та додайте товари' });
       return;
     }
 
