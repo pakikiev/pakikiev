@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutForm = document.getElementById('checkout-form');
   const checkoutStatus = document.getElementById('checkout-status');
   const checkoutPhone = document.getElementById('checkout-phone');
-  const orderApiUrl = window.ORDER_API_URL || '/api/order';
+  const orderApiUrl = window.ORDER_API_URL || 'https://paki-kyiv-shop.onrender.com/api/order';
   const savedPhone = localStorage.getItem('checkout-phone');
 
   if (savedPhone && checkoutPhone) {
