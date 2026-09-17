@@ -154,6 +154,30 @@ async function handleTelegram(request, response) {
   }
 }
 
+async function configureTelegramWebhook() {
+  if (!botToken) {
+    console.warn('TELEGRAM_BOT_TOKEN не налаштований, webhook не встановлено');
+    return;
+  }
+
+  const publicUrl = process.env.PUBLIC_URL || 'https://paki-kyiv-shop.onrender.com';
+  try {
+    const telegramResponse = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: `${publicUrl}/api/telegram` }),
+    });
+    const result = await telegramResponse.json();
+    if (!telegramResponse.ok || !result.ok) {
+      console.error('Telegram webhook error:', result);
+      return;
+    }
+    console.log('Telegram webhook налаштований');
+  } catch (error) {
+    console.error('Не вдалося налаштувати Telegram webhook:', error.message);
+  }
+}
+
 function makeTelegramMessage(order) {
   const items = order.items.map((item) => (
     `• ${escapeTelegramText(item.title)}: ${escapeTelegramText(item.quantity)} ${escapeTelegramText(item.unit)} - ${Math.round(Number(item.price))} грн`
@@ -276,4 +300,5 @@ const server = http.createServer((request, response) => {
 
 server.listen(port, () => {
   console.log(`Сайт запущено на http://localhost:${port}`);
+  configureTelegramWebhook();
 });
