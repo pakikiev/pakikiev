@@ -116,11 +116,21 @@ async function handleVisit(request, response) {
   }
 }
 
-async function sendTelegramMessage(targetChatId, text) {
+async function sendTelegramMessage(targetChatId, text, withKeyboard = true) {
   const telegramResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: targetChatId, text }),
+    body: JSON.stringify({
+      chat_id: targetChatId,
+      text,
+      ...(withKeyboard ? {
+        reply_markup: {
+          keyboard: [['Сьогодні', 'Місяць']],
+          resize_keyboard: true,
+          is_persistent: true,
+        },
+      } : {}),
+    }),
   });
   if (!telegramResponse.ok) throw new Error('Telegram не прийняв повідомлення');
 }
@@ -138,10 +148,12 @@ async function handleTelegram(request, response) {
     }
 
     let text;
-    if (command === '/help') {
+    if (command === '/start') {
+      text = 'Оберіть статистику:';
+    } else if (command === '/help' || command === 'сьогодні') {
       const visits = await firebaseRequest(`visits/${getDateKey()}`);
       text = `За сьогодні на сайт зайшло: ${countVisits(visits)} людей.`;
-    } else if (command === '/month') {
+    } else if (command === '/month' || command === 'місяць') {
       const visits = await firebaseRequest('visits');
       const monthKey = getDateKey().slice(0, 7);
       const total = Object.entries(visits || {})
