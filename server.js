@@ -125,9 +125,10 @@ async function sendTelegramMessage(targetChatId, text, withKeyboard = true) {
       text,
       ...(withKeyboard ? {
         reply_markup: {
-          keyboard: [['Сьогодні', 'Місяць']],
-          resize_keyboard: true,
-          is_persistent: true,
+            inline_keyboard: [[
+              { text: 'Сьогодні', callback_data: 'today' },
+              { text: 'Місяць', callback_data: 'month' },
+            ]],
         },
       } : {}),
     }),
@@ -138,8 +139,10 @@ async function sendTelegramMessage(targetChatId, text, withKeyboard = true) {
 async function handleTelegram(request, response) {
   try {
     const update = await readRequestBody(request);
-    const message = update.message;
+    const callbackQuery = update.callback_query;
+    const message = update.message || callbackQuery?.message;
     const command = String(message?.text || '').trim().split(/\s+/)[0].toLowerCase();
+    const callbackData = String(callbackQuery?.data || '').toLowerCase();
 
     if (!message || !chatId || String(message.chat.id) !== String(chatId)) {
       response.writeHead(200);
@@ -147,13 +150,17 @@ async function handleTelegram(request, response) {
       return;
     }
 
+    if (callbackQuery) {
+      await answerTelegramCallback(callbackQuery);
+    }
+
     let text;
     if (command === '/start') {
       text = 'Оберіть статистику:';
-    } else if (command === '/help' || command === 'сьогодні') {
+    } else if (command === '/help' || command === 'сьогодні' || callbackData === 'today') {
       const visits = await firebaseRequest(`visits/${getDateKey()}`);
       text = `За сьогодні на сайт зайшло: ${countVisits(visits)} людей.`;
-    } else if (command === '/month' || command === 'місяць') {
+    } else if (command === '/month' || command === 'місяць' || callbackData === 'month') {
       const visits = await firebaseRequest('visits');
       const monthKey = getDateKey().slice(0, 7);
       const total = Object.entries(visits || {})
@@ -174,6 +181,14 @@ async function handleTelegram(request, response) {
     response.writeHead(502);
     response.end();
   }
+}
+
+async function answerTelegramCallback(callbackQuery) {
+  await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ callback_query_id: callbackQuery.id }),
+  });
 }
 
 async function configureTelegramWebhook() {
