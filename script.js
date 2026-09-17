@@ -6,6 +6,20 @@ const priceBySize = {
 
 const cart = [];
 
+function trackVisit() {
+  const storageKey = 'site-visitor-id';
+  const visitorId = localStorage.getItem(storageKey) || `${crypto.randomUUID()}-${Date.now()}`;
+  localStorage.setItem(storageKey, visitorId);
+
+  const visitApiUrl = window.VISIT_API_URL || 'https://paki-kyiv-shop.onrender.com/api/visit';
+  fetch(visitApiUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ visitorId }),
+    keepalive: true,
+  }).catch(() => {});
+}
+
 function formatMoney(value) {
   return `${Math.round(value)} грн`;
 }
@@ -59,6 +73,8 @@ function addToCart(item) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  trackVisit();
+
   document.querySelectorAll('.crab-order').forEach((order) => {
     const sizeSelect = order.querySelector('.size-select');
     const weightSelect = order.querySelector('.weight-select');

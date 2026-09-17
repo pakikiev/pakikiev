@@ -15,6 +15,8 @@ if (fs.existsSync(envPath)) {
 const port = Number(process.env.PORT || 8000);
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_CHAT_ID;
+const firebaseDatabaseUrl = process.env.FIREBASE_DATABASE_URL
+  || 'https://paki-kyiv-default-rtdb.europe-west1.firebasedatabase.app';
 const rootDirectory = __dirname;
 
 const mimeTypes = {
@@ -56,6 +58,100 @@ function readRequestBody(request) {
     });
     request.on('error', reject);
   });
+}
+
+function getDateKey(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Kyiv',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date).reduce((result, part) => {
+    result[part.type] = part.value;
+    return result;
+  }, {});
+
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function countVisits(dayVisits) {
+  return Object.keys(dayVisits || {}).filter((visitorId) => visitorId).length;
+}
+
+async function firebaseRequest(path, options = {}) {
+  const response = await fetch(`${firebaseDatabaseUrl}/${path}.json`, options);
+  if (!response.ok) throw new Error(`Firebase error: ${response.status}`);
+  return response.json();
+}
+
+async function handleVisit(request, response) {
+  try {
+    const body = await readRequestBody(request);
+    const visitorId = String(body.visitorId || '');
+    if (!/^[a-zA-Z0-9_-]{16,80}$/.test(visitorId)) {
+      sendJson(response, 400, { error: 'Некоректний ідентифікатор відвідувача' });
+      return;
+    }
+
+    await firebaseRequest(`visits/${getDateKey()}/${encodeURIComponent(visitorId)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: 'true',
+    });
+    response.writeHead(204);
+    response.end();
+  } catch (error) {
+    console.error('Visit tracking error:', error);
+    sendJson(response, 502, { error: 'Не вдалося зберегти відвідування' });
+  }
+}
+
+async function sendTelegramMessage(targetChatId, text) {
+  const telegramResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: targetChatId, text }),
+  });
+  if (!telegramResponse.ok) throw new Error('Telegram не прийняв повідомлення');
+}
+
+async function handleTelegram(request, response) {
+  try {
+    const update = await readRequestBody(request);
+    const message = update.message;
+    const command = String(message?.text || '').trim().split(/\s+/)[0].toLowerCase();
+
+    if (!message || !chatId || String(message.chat.id) !== String(chatId)) {
+      response.writeHead(200);
+      response.end();
+      return;
+    }
+
+    let text;
+    if (command === '/help') {
+      const visits = await firebaseRequest(`visits/${getDateKey()}`);
+      text = `За сьогодні на сайт зайшло: ${countVisits(visits)} людей.`;
+    } else if (command === '/month') {
+      const visits = await firebaseRequest('visits');
+      const monthKey = getDateKey().slice(0, 7);
+      const total = Object.entries(visits || {})
+        .filter(([dateKey]) => dateKey.startsWith(monthKey))
+        .reduce((sum, [, dayVisits]) => sum + countVisits(dayVisits), 0);
+      text = `За цей місяць на сайт зайшло: ${total} людей.`;
+    } else {
+      response.writeHead(200);
+      response.end();
+      return;
+    }
+
+    await sendTelegramMessage(message.chat.id, text);
+    response.writeHead(200);
+    response.end();
+  } catch (error) {
+    console.error('Telegram command error:', error);
+    response.writeHead(502);
+    response.end();
+  }
 }
 
 function makeTelegramMessage(order) {
@@ -152,6 +248,16 @@ const server = http.createServer((request, response) => {
   if (request.method === 'OPTIONS') {
     response.writeHead(204);
     response.end();
+    return;
+  }
+
+  if (request.method === 'POST' && request.url === '/api/visit') {
+    handleVisit(request, response);
+    return;
+  }
+
+  if (request.method === 'POST' && request.url === '/api/telegram') {
+    handleTelegram(request, response);
     return;
   }
 
