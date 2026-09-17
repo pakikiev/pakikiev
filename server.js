@@ -17,6 +17,7 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_CHAT_ID;
 const firebaseDatabaseUrl = process.env.FIREBASE_DATABASE_URL
   || 'https://paki-kyiv-default-rtdb.europe-west1.firebasedatabase.app';
+const firebaseDatabaseSecret = process.env.FIREBASE_DATABASE_SECRET;
 const rootDirectory = __dirname;
 
 const mimeTypes = {
@@ -79,7 +80,10 @@ function countVisits(dayVisits) {
 }
 
 async function firebaseRequest(path, options = {}) {
-  const response = await fetch(`${firebaseDatabaseUrl}/${path}.json`, options);
+  const authQuery = firebaseDatabaseSecret
+    ? `?auth=${encodeURIComponent(firebaseDatabaseSecret)}`
+    : '';
+  const response = await fetch(`${firebaseDatabaseUrl}/${path}.json${authQuery}`, options);
   if (!response.ok) throw new Error(`Firebase error: ${response.status}`);
   return response.json();
 }
