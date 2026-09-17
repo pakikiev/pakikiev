@@ -15,9 +15,15 @@ if (fs.existsSync(envPath)) {
 const port = Number(process.env.PORT || 8000);
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_CHAT_ID;
-const firebaseDatabaseUrl = process.env.FIREBASE_DATABASE_URL
-  || 'https://paki-kyiv-default-rtdb.europe-west1.firebasedatabase.app';
-const firebaseDatabaseSecret = process.env.FIREBASE_DATABASE_SECRET;
+const defaultFirebaseDatabaseUrl = 'https://paki-kyiv-default-rtdb.europe-west1.firebasedatabase.app';
+const configuredFirebaseDatabaseUrl = process.env.FIREBASE_DATABASE_URL || '';
+const firebaseDatabaseUrl = /^https?:\/\//.test(configuredFirebaseDatabaseUrl)
+  ? configuredFirebaseDatabaseUrl.replace(/\/$/, '')
+  : defaultFirebaseDatabaseUrl;
+const firebaseDatabaseSecret = process.env.FIREBASE_DATABASE_SECRET
+  || (configuredFirebaseDatabaseUrl && !/^https?:\/\//.test(configuredFirebaseDatabaseUrl)
+    ? configuredFirebaseDatabaseUrl
+    : '');
 const rootDirectory = __dirname;
 
 const mimeTypes = {
